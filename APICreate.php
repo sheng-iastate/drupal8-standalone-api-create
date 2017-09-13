@@ -1,15 +1,25 @@
 #!/usr/bin/env php
 <?php
 
-$options = getopt( NULL, ['site:']);
+// options required --site, optional --gitref
+$options = getopt( NULL, ['site:', 'gitref::']);
 
 if (empty($options['site']))
 {
 	echo basename(__FILE__) . " usage --site=<sitename 16character limit>\n";
+	echo " \t(optional) --gitref=<git branch, tag, reference>\n";
 	exit(1);
 }
 
 $site = trim($options['site']);
+
+$gitref = 'master';
+if (!empty($options['gitref']))
+{
+	$gitref = trim($options['gitref']);
+}
+
+
 
 
 // Read the configs
@@ -58,10 +68,16 @@ if ( !isset($template->kind) ||  $template->kind != 'Template' )
 // Loop Through the Parameters and sets the Site Name
 foreach( $template->parameters as $key => $param )
 {
-	if($param->name == 'SITE')
+	$paramName = $param->name;
+	switch ($paramName)
 	{
-		$template->parameters[$key]->value = $site;
-	}
+		case 'SITE':
+			$template->parameters[$key]->value = $site;
+			break;
+		case 'IASTATE8PROJECTGITREF':
+			$template->parameters[$key]->value = $gitref;
+			break;
+	}	
 }
 
 $templateJson = json_encode($template);
@@ -109,6 +125,7 @@ foreach( $processedTemplate->parameters as $key => $param )
 		$drupalAdminPassword = $processedTemplate->parameters[$key]->value;
 	}
 }
+
 
 
 //$kindToEnpoint = [
