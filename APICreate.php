@@ -150,7 +150,7 @@ curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 
-
+$hasError = false;
 // Loop through the objects and create theme
 foreach( $processedTemplate->objects AS $key => $osObject  )
 {
@@ -185,8 +185,15 @@ foreach( $processedTemplate->objects AS $key => $osObject  )
 	if ( !isset($osResponse->kind) || $osResponse->kind != $osObject->kind ) 
 	{
 		echo "Error creating " . $osObject->kind . "\n";
+		$hasError = true;
 	}
 	
+}
+
+// proper exit code if an error occured
+if($hasError)
+{
+	exit(1);
 }
 
 curl_close($ch);
