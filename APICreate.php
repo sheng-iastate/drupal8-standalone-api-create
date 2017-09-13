@@ -77,6 +77,8 @@ curl_setopt(
 		'Content-Type: application/json',
 	]
 ); 
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); 
+curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
 curl_setopt($ch, CURLOPT_POSTFIELDS, $templateJson); 
@@ -126,6 +128,8 @@ curl_setopt(
 		'Content-Type: application/json',
 	]
 ); 
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); 
+curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 
